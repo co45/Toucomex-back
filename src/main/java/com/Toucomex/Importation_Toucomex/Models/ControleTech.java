@@ -2,6 +2,7 @@ package com.Toucomex.Importation_Toucomex.Models;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -57,6 +58,7 @@ public class ControleTech {
     @UpdateTimestamp
     private Date dateUpdate;
 
+    @JsonIgnore
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name ="fac_id")
     private Facture facCtrl;
