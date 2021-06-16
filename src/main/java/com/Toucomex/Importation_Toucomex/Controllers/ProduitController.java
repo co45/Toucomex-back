@@ -4,6 +4,7 @@ import com.Toucomex.Importation_Toucomex.Models.*;
 //import com.Toucomex.Importation_Toucomex.Repositories.ProduitRepository;
 import com.Toucomex.Importation_Toucomex.Repositories.FactureRepository;
 import com.Toucomex.Importation_Toucomex.Repositories.ProduitRepository;
+import com.Toucomex.Importation_Toucomex.Repositories.controleRepository;
 import com.Toucomex.Importation_Toucomex.Repositories.listProduitCommandeRepository;
 import com.Toucomex.Importation_Toucomex.Services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,51 +33,37 @@ public class ProduitController {
     FactureRepository fr;
     @PersistenceContext
     EntityManager em;
+    @Autowired
+    controleRepository cr;
 
 
     @GetMapping("/pdts")
     public ResponseEntity<List<Produit>> getAllPdts() { return ps.getallPdts(); }
 
 
-    @PostMapping("/createctrl/{ids}/{numfac}")
-    public void createPdt(@PathVariable String ids, @PathVariable String numfac ) {
-        //create facture
-        Facture facture = new Facture();
+    @GetMapping("/createctrl/{ids}/{numfac}")
+    public String createPdt(@PathVariable String ids, @PathVariable String numfac ) {
+        System.out.println("*********************** CREATE PDT *****************************");
+        ControleTech ctr= new ControleTech();
+        ctr.setNum_lot("1235");
+        ctr.setQuantite(10);
+        ctr.setNum_incm("12365");
+        ctr.setProduits(ids);
+        Facture facture= new Facture();
         facture.setNum(numfac);
-        fr.save(facture);
+        ctr.setFacCtrl(facture);
+        try {
+            cr.save(ctr);
+            System.out.println("*********************** CREATE PDT SUCCESS*****************************");
+            return "200";
+        }catch(Exception x){
+            System.out.println("*********************** CREATE PDT FAILURE *****************************");
 
-        //update facture id in ProduitCommande
-        String[] lst = ids.split(",");
-
-
-        for (String tmp : lst) {
-            //pcr.updateCmd(facture.getID_f(), Long.parseLong(tmp));
-//            updatecmdp(facture.getID_f(), Long.parseLong(tmp));
-
-
-            Produit produit=null;
-            for (Produit tmp1: pr.findAll() ) {
-                if ((tmp1.getID_pdt()+"").equals(tmp)){
-                    produit=tmp1;
-
-                    break;
-                }
-            }
-            System.out.println("produit :  "+produit.toString());
-
-            ProduitCommande pdct=pcr.getCommandeProduitByPid(produit.getID_pdt().toString());
-            System.out.println("ProduitCommande : "+ pdct);
-
-            ProduitCommandeId pcid = new ProduitCommandeId();
-
-
-
-            pcid.setProduitId(Long.parseLong(tmp));
-//            pcid.setCommandeId();
-//            pcr.findById()
-
+            return "400";
 
         }
+
+
     }
     @Transactional
     public void updatecmdp(Long fid,Long pid){

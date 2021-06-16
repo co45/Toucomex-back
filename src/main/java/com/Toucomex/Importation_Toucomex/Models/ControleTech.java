@@ -30,6 +30,8 @@ public class ControleTech {
 
     private String Num_incm;
 
+    private String produits;
+
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate Date_dep_incm;
 

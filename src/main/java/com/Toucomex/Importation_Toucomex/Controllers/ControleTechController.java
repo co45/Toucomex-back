@@ -2,6 +2,8 @@ package com.Toucomex.Importation_Toucomex.Controllers;
 import com.Toucomex.Importation_Toucomex.Auth.message.response.ResponseMessage;
 import com.Toucomex.Importation_Toucomex.Models.ControleTech;
 import com.Toucomex.Importation_Toucomex.Models.Facture;
+import com.Toucomex.Importation_Toucomex.Repositories.FactureRepository;
+import com.Toucomex.Importation_Toucomex.Repositories.controleRepository;
 import com.Toucomex.Importation_Toucomex.Services.CommandeService;
 import com.Toucomex.Importation_Toucomex.Services.ControleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,11 @@ public class ControleTechController {
 
     @Autowired
     private ControleService cs;
+    @Autowired
+    private controleRepository cr;
+    @Autowired
+    private FactureRepository fr;
+
 
 
     @GetMapping("/all")
@@ -26,6 +33,7 @@ public class ControleTechController {
     {
         return  cs.getAllControletech();
     }
+
     @GetMapping("/ctrl/{id}")
     public ResponseEntity<ControleTech> getCtrl(@PathVariable Long id)
     {
@@ -40,6 +48,39 @@ public class ControleTechController {
 //
         return new ResponseEntity<>(HttpStatus.OK);//("User registered successfully!"), HttpStatus.OK);
 
+    }
+
+    @GetMapping("/try")
+    public String addCtrl()
+    {
+        ControleTech ctr= new ControleTech();
+        ctr.setNum_lot("1235");
+        ctr.setQuantite(10);
+        ctr.setNum_incm("12365");
+        Facture facture= new Facture();
+        facture.setNum("646231");
+        ctr.setFacCtrl(facture);
+        try {
+            cr.save(ctr);
+            return "200";
+        }catch(Exception x){
+            return "400";
+
+        }
+    }
+
+    @GetMapping("/tryread")
+    public String test()
+    {
+        try {
+            ControleTech ctrl= cr.findById(Long.valueOf(3)).get();
+            System.out.println("TESTXXX : "+ ctrl.toString());
+            System.out.println("TESTRRRR : "+ ctrl.getFacCtrl().getID_f());
+            return "200";
+        }catch(Exception x){
+            return "400";
+
+        }
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteCtrl(@PathVariable Long id)
