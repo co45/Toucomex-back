@@ -39,6 +39,10 @@ public class SuiviImp {
     private LocalDate Date_arrive_stock;
 
 
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name ="Id_facture")
+    private Facture fac;
+
     @OneToOne(mappedBy = "receptionsuivi")
     private Reception ReceptionS;
 

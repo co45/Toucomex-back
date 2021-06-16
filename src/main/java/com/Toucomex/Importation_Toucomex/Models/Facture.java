@@ -40,14 +40,9 @@ public class Facture {
     @UpdateTimestamp
     private Date dateUpdate;
 
-
-    @OneToOne(cascade=CascadeType.ALL)
-    private SuiviImp FacSuivi;
-
-
-
     @OneToOne(mappedBy = "facCtrl")
     private ControleTech ctrl;
+
 
     @OneToMany(mappedBy = "facture")
     private Set<ProduitCommande> ProduitCommandes = new HashSet<>();
