@@ -1,11 +1,26 @@
 package com.Toucomex.Importation_Toucomex.Models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.context.annotation.Primary;
 
+import java.time.LocalDate;
+
+@Data
+@AllArgsConstructor
 public class ControleTechniqueModel {
 
-    private String label;
-    private String name;
-
-    private Integer number;
+    private String facture;
+    private String numIncm;
+    private String numLot;
+    private String numApe;
+    private String origine;
+    private String provenance;
+    private String quantite;
+    private String produit;
+    private LocalDate dateAmc;
+    private LocalDate dateApe;
+    private LocalDate dateIncm;
+    private LocalDate datePeremption;
+    private LocalDate dateRecEch;
 }
