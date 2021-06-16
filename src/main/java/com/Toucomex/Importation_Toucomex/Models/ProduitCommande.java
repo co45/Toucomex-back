@@ -44,7 +44,7 @@ public class ProduitCommande {
 
 
     public ProduitCommande( Produit produit, Commande commande, Integer quantite, Float prix) {
-        this.id = new ProduitCommandeId(commande.getID_cmd(),produit.getID_pdt(),facture.getID_f());
+        this.id = new ProduitCommandeId(commande.getID_cmd(),produit.getID_pdt());
         this.produit = produit;
         this.commande = commande;
         this.quantite = quantite;

@@ -20,7 +20,7 @@ public class FournisseurService {
 
     public ResponseEntity<List<Fournisseur>> getallfournisseur()
     {
-        List<Fournisseur> lststds=fourrepos.findAll();
+        List<Fournisseur> lststds=fourrepos.getAllFscs();
         if(lststds.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(lststds,HttpStatus.OK);

@@ -2,6 +2,7 @@ package com.Toucomex.Importation_Toucomex.Models;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,6 +21,10 @@ import java.util.Set;
 @Entity
 @Table(name = "commande")
 public class Commande {
+    public Long getID_cmd() {
+        return ID_cmd;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID_cmd;
@@ -44,15 +49,10 @@ public class Commande {
     private Set<ProduitCommande> ProduitCommandes = new HashSet<>();
 
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name ="ID_fsr")
     private Fournisseur fsrc;
-
-
-
-
-
 
 
 }

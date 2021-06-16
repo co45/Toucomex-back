@@ -30,53 +30,7 @@ public class ExcelUtils {
     public static String EXCELTYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 
-    public static List<Client> parseExcelFileClient(InputStream is) {
-        try {
-            Workbook workbook = new XSSFWorkbook(is);
 
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rows = sheet.iterator();
-
-            List<Client> lstClt = new ArrayList<Client>();
-
-            int rowNumber = 0;
-            while (rows.hasNext()) {
-                Row currentRow = rows.next();
-
-                // skip header
-                if (rowNumber == 0) {
-                    rowNumber++;
-                    continue;
-                }
-
-                Iterator<Cell> cellsInRow = currentRow.iterator();
-
-                Client clt = new Client();
-
-
-                int cellIndex = 0;
-
-                while (cellsInRow.hasNext()) {
-                    Cell currentCell = cellsInRow.next();
-                    if (cellIndex == 0) { // code
-                        clt.setCode(currentCell.getStringCellValue());
-                    } else if (cellIndex == 1) { // libelle
-                        clt.setLibelle(currentCell.getStringCellValue());
-                    }
-                    cellIndex++;
-                }
-
-                lstClt.add(clt);
-            }
-            // Close WorkBook
-            workbook.close();
-
-            return lstClt;
-        } catch (IOException e) {
-            throw new RuntimeException("FAIL! -> message = " + e.getMessage());
-        }
-
-    }
 
 
 

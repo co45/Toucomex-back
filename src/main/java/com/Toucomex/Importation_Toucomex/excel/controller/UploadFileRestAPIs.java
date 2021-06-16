@@ -58,38 +58,24 @@ public class UploadFileRestAPIs {
         }
     }
 
-    @PostMapping("/upload/client")
-    public ResponseEntity uploadclt(@RequestParam("file") MultipartFile file) {
+
+    @PostMapping("/upload/commande")
+    public ResponseEntity uploadCmd(@RequestParam("file") MultipartFile file) {
+
         String message = "";
         try {
-            fileServices.storeClt(file);
+            fileServices.storeCmd(file);
             files.add(file.getOriginalFilename());
 
             message = "You successfully uploaded " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.OK).body(message);
         } catch (Exception e) {
-            message = "FAIL to upload " + file.getOriginalFilename() + "!";
+            message = "FAIL to upload " + file.getOriginalFilename() + "!" + e;
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
         }
-    }
 
-//    @PostMapping("/upload/commande")
-//    public ResponseEntity uploadCmd(@RequestParam("file") MultipartFile file) {
-//
-//        String message = "";
-//        try {
-//            fileServices.storeCmd(file);
-//            files.add(file.getOriginalFilename());
-//
-//            message = "You successfully uploaded " + file.getOriginalFilename() + "!";
-//            return ResponseEntity.status(HttpStatus.OK).body(message);
-//        } catch (Exception e) {
-//            message = "FAIL to upload " + file.getOriginalFilename() + "!" + e;
-//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
-//        }
-//
-//
-//    }
+
+    }
 
     @PostMapping("/upload/produit")
     public ResponseEntity uploadPdt(@RequestParam("file") MultipartFile file) {

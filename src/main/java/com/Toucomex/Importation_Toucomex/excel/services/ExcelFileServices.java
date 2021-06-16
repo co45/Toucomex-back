@@ -30,8 +30,7 @@ public class ExcelFileServices {
 
     @Autowired
     FournisseurRepository fr;
-    @Autowired
-    ClientRepository cr;
+
     @Autowired
     CommandeRepository cmdr;
     @Autowired
@@ -54,77 +53,88 @@ public class ExcelFileServices {
     }
 
 
-    public void storeClt(MultipartFile file) {
+
+
+    public void storeCmd(MultipartFile file) throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         try {
-            List<Client> lstClt = ExcelUtils.parseExcelFileClient(file.getInputStream());
-            // Save Fsr to DataBase
-            cr.saveAll(lstClt);
+            //---------------------
+            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rows = sheet.iterator();
+
+            List<Commande> lstCmd = new ArrayList<Commande>();
+            List<ProduitCommande> lstpcmd = new ArrayList<ProduitCommande>();
+
+
+            int x;
+            int rowNumber = 0;
+            while (rows.hasNext()) {
+                Row currentRow = rows.next();
+
+
+                // skip header
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+
+                Iterator<Cell> cellsInRow = currentRow.iterator();
+                Commande cmd = new Commande();
+                ProduitCommande pcmd= new ProduitCommande();
+                ProduitCommandeId pci= new ProduitCommandeId();
+
+                int cellIndex = 0;
+
+                Boolean bln=false;
+                String numcmd;
+                while (cellsInRow.hasNext()) {
+                    Cell currentCell = cellsInRow.next();
+                    if(cellIndex==0 && cmdr.CommandeExists(currentCell.getStringCellValue())==0){
+                        bln=true;
+                    }
+                    if( cellIndex==0 && bln){
+                        cmd.setNumero(currentCell.getStringCellValue());
+
+
+                    }else if ( cellIndex == 1 && bln ) { // date
+                        LocalDate localDate = LocalDate.parse(currentCell.getStringCellValue(), formatter);
+                        cmd.setDate_cmd(localDate);
+                        cmdr.save(cmd);
+                        pci.setCommandeId(cmd.getID_cmd());
+                    } else if ( cellIndex == 2 && bln )  { // fourniseur
+                        cmd.setFsrc(fr.getFournisseurBynom(currentCell.getStringCellValue()));
+                    }else if ( cellIndex == 3 )  { // produit
+                        pcmd.setProduit(pr.findProduitsByReference(currentCell.getStringCellValue()));
+                        pci.setProduitId(pr.findProduitsByReference(currentCell.getStringCellValue()).getID_pdt());
+                    }else if ( cellIndex == 5 )  { // qté
+                        pcmd.setQuantite((int)currentCell.getNumericCellValue());
+                    }else if ( cellIndex == 6 )  { // prix
+                        pcmd.setPrix((float)currentCell.getNumericCellValue());
+                    }
+                    cellIndex++;
+                }
+                if(bln){
+                    pcmd.setId(pci);
+                    lstCmd.add(cmd);
+                    lstpcmd.add(pcmd);
+                }
+
+                }
+
+
+            // Close WorkBook
+            workbook.close();
+
+
+            //---------------------
+            // Save cmd + pcmd  to DataBase
+            pdtcmdr.saveAll(lstpcmd);
         } catch (IOException e) {
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());
         }
     }
-
-//    public void storeCmd(MultipartFile file) throws IOException {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-//        try {
-//            //---------------------
-//            Workbook workbook = new XSSFWorkbook(file.getInputStream());
-//
-//            Sheet sheet = workbook.getSheetAt(0);
-//            Iterator<Row> rows = sheet.iterator();
-//
-//            List<Commande> lstCmd = new ArrayList<Commande>();
-//
-//            int x;
-//            int rowNumber = 0;
-//            while (rows.hasNext()) {
-//                Row currentRow = rows.next();
-//
-//                // skip header
-//                if (rowNumber == 0) {
-//                    rowNumber++;
-//                    continue;
-//                }
-//
-//                Iterator<Cell> cellsInRow = currentRow.iterator();
-//                Commande cmd = new Commande();
-//                ProduitCommande pcmd= new ProduitCommande();
-//                int cellIndex = 0;
-//
-//                while (cellsInRow.hasNext()) {
-//                    Cell currentCell = cellsInRow.next();
-//
-//                    if ( cellIndex == 0){
-//                        String numcmd=currentCell.getStringCellValue();
-//                        x=cmdr.CommandeExists(numcmd);}
-//
-//
-//                    if(x==0 && cellIndex==0){
-//                        cmd.setNumero(currentCell.getStringCellValue());
-//                    }else if (x==0 && cellIndex == 1  ) { // date
-//                        LocalDate localDate = LocalDate.parse(cellsInRow.next().getStringCellValue(), formatter);
-//                        cmd.setDate_cmd(localDate);
-//                    } else if (x==0 && cellIndex == 2  )  { // fourniseur
-//                        cmd.setFsrc(fr.getFournisseurBynom(currentCell.getStringCellValue()));
-//                    }
-//                    cellIndex++;
-//                }
-//                lstCmd.add(cmd);
-//
-//                }
-//
-//
-//            // Close WorkBook
-//            workbook.close();
-//
-//
-//            //---------------------
-//            // Save cmd + pcmd  to DataBase
-//            cmdr.saveAll(lstCmd);
-//        } catch (IOException e) {
-//            throw new RuntimeException("FAIL! -> message = " + e.getMessage());
-//        }
-//    }
 
 //    public void storeCmd(MultipartFile file) throws IOException {
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");

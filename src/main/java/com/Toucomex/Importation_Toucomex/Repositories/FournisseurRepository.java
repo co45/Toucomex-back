@@ -19,5 +19,10 @@ public interface FournisseurRepository extends JpaRepository<Fournisseur,Long> {
     @Query(value = "SELECT * FROM Fournisseur WHERE nom =:nomf ;",nativeQuery = true)
     Fournisseur getFournisseurBynom(@Param("nomf") String nomf);
 
+    @Query(value = "SELECT id_fsr,adresse_fsr,code_fsr,libelle_fsr,nom,swift FROM Fournisseur;",nativeQuery = true)
+    List<Fournisseur> getAllFscs();
+
+
+
 
 }

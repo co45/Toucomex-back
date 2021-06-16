@@ -1,6 +1,7 @@
 package com.Toucomex.Importation_Toucomex.Models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
@@ -35,13 +36,12 @@ public class Fournisseur {
     @NonNull
     private String swift;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy="fsrc")
+    @OneToMany(mappedBy="fsrc",cascade = CascadeType.ALL)
     private Set<Commande> commandeFournisseur= new HashSet<>();
 
-    @JsonManagedReference
-    @OneToMany(mappedBy="FournisseurTitre")
-    private Set<Titre> fournisseurTitre;
+    @JsonIgnore
+    @OneToMany(mappedBy="FournisseurTitre", cascade = CascadeType.ALL)
+    private Set<Titre> fournisseurTitre= new HashSet<>();
 
 
 }
