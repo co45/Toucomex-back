@@ -52,11 +52,9 @@ public class ControleTech {
 
     private String Origine;
 
-    @NonNull
     @CreationTimestamp
     private Date dateCreation;
 
-    @NonNull
     @UpdateTimestamp
     private Date dateUpdate;
 
@@ -66,7 +64,7 @@ public class ControleTech {
     private Facture facCtrl;
 
 
-    public ControleTech(String num_lot, LocalDate date_per, String num_incm, LocalDate date_dep_incm, LocalDate date_amc, LocalDate date_recup_ech, String num_ape, LocalDate date_ape, int quantite, String provenance, String origine, @NonNull Date dateCreation, @NonNull Date dateUpdate, Facture facCtrl) {
+    public ControleTech(String num_lot, LocalDate date_per, String num_incm, LocalDate date_dep_incm, LocalDate date_amc, LocalDate date_recup_ech, String num_ape, LocalDate date_ape, int quantite, String provenance, String origine, Facture facCtrl) {
         Num_lot = num_lot;
         Date_per = date_per;
         Num_incm = num_incm;
@@ -81,8 +79,4 @@ public class ControleTech {
         this.facCtrl = facCtrl;
     }
 
-
-    public ControleTech(int quantite, String provenance, String origine, String num_lot, String num_incm, String num_ape, LocalDate date_recup_ech, LocalDate date_per, LocalDate date_dep_incm, LocalDate date_ape, LocalDate date_amc) {
-
-    }
 }

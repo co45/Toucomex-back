@@ -89,29 +89,24 @@ public class AuthRestAPIs  {
 
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(RoleName.ROLE_COMMERCIAL)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					.orElseThrow(() -> new RuntimeException("Error: Role n'existe pas."));
 			roles.add(userRole);
 		} else {
 			strRoles.forEach(role -> {
 				switch (role) {
-					case "stock":
-						Role stockRole = roleRepository.findByName(RoleName.ROLE_STOCK)
-								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-						roles.add(stockRole);
-						break;
 					case "achat":
 						Role achatRole = roleRepository.findByName(RoleName.ROLE_ACHAT)
-								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+								.orElseThrow(() -> new RuntimeException("Fail! -> User Role n'existe pas."));
 						roles.add(achatRole);
 						break;
 					case "admin":
 						Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+								.orElseThrow(() -> new RuntimeException("Fail! -> User Role n'existe pas."));
 						roles.add(adminRole);
 						break;
 					default:
 						Role userRole = roleRepository.findByName(RoleName.ROLE_COMMERCIAL)
-								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role n'existe pas."));
 						roles.add(userRole);
 				}
 			});
@@ -121,7 +116,4 @@ public class AuthRestAPIs  {
 
 		return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
 	}
-
-
-
 }

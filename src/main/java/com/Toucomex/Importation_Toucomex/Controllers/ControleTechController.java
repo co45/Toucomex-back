@@ -1,7 +1,9 @@
 package com.Toucomex.Importation_Toucomex.Controllers;
 import com.Toucomex.Importation_Toucomex.Auth.message.response.ResponseMessage;
 import com.Toucomex.Importation_Toucomex.Models.ControleTech;
+import com.Toucomex.Importation_Toucomex.Models.ControleTechniqueModel;
 import com.Toucomex.Importation_Toucomex.Models.Facture;
+import com.Toucomex.Importation_Toucomex.Models.Produit;
 import com.Toucomex.Importation_Toucomex.Repositories.FactureRepository;
 import com.Toucomex.Importation_Toucomex.Repositories.controleRepository;
 import com.Toucomex.Importation_Toucomex.Services.CommandeService;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin(origins ="*", maxAge = 3600)
@@ -40,12 +43,16 @@ public class ControleTechController {
         return cs.getControletechById(id);
     }
     @PostMapping("/newsCtrl")
-    public ResponseEntity<?>addCtrl(@Valid @RequestBody ControleTech ctrl, Facture facture)
+    public ResponseEntity<?>addCtrl(@Valid @RequestBody ControleTechniqueModel ctrl)
     {
 
-//        Facture fac=new Facture(facture.getDate_f(),facture.getNum_Fac(), facture.getLibelle_f(),facture.getCommandeF());
-//        ControleTech ctrlA=new ControleTech(ctrl.getQuantite(),ctrl.getProvenance(),ctrl.getOrigine(),ctrl.getNum_lot(),ctrl.getNum_incm(), ctrl.getNum_ape(),ctrl.getDate_recup_ech(),ctrl.getDate_per(),ctrl.getDate_dep_incm(),ctrl.getDate_ape(),ctrl.getDate_amc());
-//
+        LocalDate dc = LocalDate.now();
+        LocalDate du = dc;
+        Produit p = new Produit();
+        ControleTech rctrl=new ControleTech(ctrl.getNumLot(),ctrl.getDatePeremption(),ctrl.getNumIncm(),ctrl.getDateIncm(),ctrl.getDateAmc(),ctrl.getDateRecEch(),ctrl.getNumApe(),ctrl.getDateApe(),Integer.parseInt(ctrl.getQuantite()),ctrl.getProvenance(),ctrl.getOrigine(),fr.getByfnum(ctrl.getFacture()));
+
+
+
         return new ResponseEntity<>(HttpStatus.OK);//("User registered successfully!"), HttpStatus.OK);
 
     }

@@ -51,6 +51,10 @@ public class ProduitController {
         ctr.setProduits(ids);
         Facture facture= new Facture();
         facture.setNum(numfac);
+        System.out.println("====================== facture ==> "+numfac);
+        System.out.println("====================== ids produits ==> "+ids);
+
+
         ctr.setFacCtrl(facture);
         try {
             cr.save(ctr);
