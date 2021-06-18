@@ -33,7 +33,8 @@ public class SignUpForm {
 
     private byte[] photo;
 
-    private Set<String> role;
+//    private Set<String> role;
+    private String role;
 
     private String departement;
     

@@ -84,6 +84,17 @@ public class ControleTechController {
         System.out.println("ControleTechniqueModel from addCtrl: "+ctrl.toString());
         ControleTech ctr = new ControleTech();
         ctr.setNum_lot(ctrl.getNumLot());
+        ctr.setQuantite(Integer.parseInt(ctrl.getQuantite()));
+        ctr.setDate_per(ctrl.getDatePeremption());
+        ctr.setOrigine(ctrl.getOrigine());
+        ctr.setProvenance(ctrl.getProvenance());
+        ctr.setQuantite(Integer.parseInt(ctrl.getQuantite()));
+        ctr.setDate_ape(ctrl.getDateApe());
+        ctr.setNum_ape(ctrl.getNumApe());
+        ctr.setNum_incm(ctrl.getNumIncm());
+        ctr.setDate_recup_ech(ctrl.getDateRecEch());
+        ctr.setDate_amc(ctrl.getDateAmc());
+
         ctr.setProduits(ctrl.getProduit().substring(0, ctrl.getProduit().length() - 1) );
         Facture facture = new Facture();
         facture.setNum(ctrl.getFacture());

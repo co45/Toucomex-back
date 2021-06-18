@@ -84,16 +84,18 @@ public class AuthRestAPIs  {
 		User user = new User(signUpRequest.getName(), signUpRequest.getPrenom(), signUpRequest.getUsername(), signUpRequest.getEmail(),
 				encoder.encode(signUpRequest.getPassword()), signUpRequest.getDateOfBirth(), signUpRequest.getPhone(), signUpRequest.getDepartement(),signUpRequest.getPhoto());
 
-		Set<String> strRoles = signUpRequest.getRole();
+//		Set<String> strRoles = signUpRequest.getRole();
+		String strRoles = signUpRequest.getRole();
+
 		Set<Role> roles = new HashSet<>();
 
-		if (strRoles == null) {
+		if (strRoles.isBlank()) {
 			Role userRole = roleRepository.findByName(RoleName.ROLE_COMMERCIAL)
 					.orElseThrow(() -> new RuntimeException("Error: Role n'existe pas."));
 			roles.add(userRole);
 		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
+//			strRoles.forEach(role -> {
+				switch (/*role*/ strRoles) {
 					case "achat":
 						Role achatRole = roleRepository.findByName(RoleName.ROLE_ACHAT)
 								.orElseThrow(() -> new RuntimeException("Fail! -> User Role n'existe pas."));
@@ -109,7 +111,7 @@ public class AuthRestAPIs  {
 								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role n'existe pas."));
 						roles.add(userRole);
 				}
-			});
+//			});
 		}
 		user.setRoles(roles);
 		userRepository.save(user);
