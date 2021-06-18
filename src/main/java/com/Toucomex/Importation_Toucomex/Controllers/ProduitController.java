@@ -66,9 +66,8 @@ public class ProduitController {
             return "400";
 
         }
-
-
     }
+
     @Transactional
     public void updatecmdp(Long fid,Long pid){
         em.createNativeQuery("UPDATE TABLE produit_commande SET id_f="+fid+" WHERE produit_id="+pid).executeUpdate();
@@ -104,7 +103,7 @@ public class ProduitController {
     }
 
     @PostMapping("/new")
-    public Produit createPdt(@Valid @RequestBody  Produit produit) {
+    public Produit createPdt(@Valid @RequestBody Produit produit) {
         return pr.save(produit);
     }
 

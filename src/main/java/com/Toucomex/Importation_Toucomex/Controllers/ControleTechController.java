@@ -52,6 +52,7 @@ public class ControleTechController {
                         ControlTechTableModel model = new ControlTechTableModel();
                         model.setControlTech(tmp.getID_ctrl()+"");
                         model.setRefProuct(""+proEn.getID_pdt());
+                        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXX REFERENCE PRODUIT :"+proEn.getReference());
                         model.setFacture(tmp.getFacCtrl().getNum());
                         cscs.add(model);
                     }
@@ -107,9 +108,9 @@ public class ControleTechController {
         ctr.setFacCtrl(facture);
         try {
             cr.save(ctr);
-            return "200";
+            return "Controle Ajouté !";
         } catch (Exception x) {
-            return "400";
+            return "Impossible d'ajouter le controle !";
 
         }
     }

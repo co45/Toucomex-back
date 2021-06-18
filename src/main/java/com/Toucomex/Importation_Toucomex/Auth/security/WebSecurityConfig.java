@@ -71,6 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/produit/**").permitAll()
                 .antMatchers("/suivi/**").permitAll()
                 .antMatchers("/titre/**").permitAll()
+                .antMatchers("/facture/**").permitAll()
+
 
                 .anyRequest().authenticated();
 
