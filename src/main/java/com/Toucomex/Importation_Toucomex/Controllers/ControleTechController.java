@@ -51,7 +51,7 @@ public class ControleTechController {
                     if(proEn.getID_pdt() == Long.valueOf(prod)) {
                         ControlTechTableModel model = new ControlTechTableModel();
                         model.setControlTech(tmp.getID_ctrl()+"");
-                        model.setRefProuct(""+proEn.getID_pdt());
+                        model.setRefProuct(""+proEn.getReference());
                         System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXX REFERENCE PRODUIT :"+proEn.getReference());
                         model.setFacture(tmp.getFacCtrl().getNum());
                         cscs.add(model);

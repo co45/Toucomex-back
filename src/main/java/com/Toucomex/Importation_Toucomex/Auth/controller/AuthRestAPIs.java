@@ -99,7 +99,7 @@ public class AuthRestAPIs  {
 								.orElseThrow(() -> new RuntimeException("Fail! -> User Role n'existe pas."));
 						roles.add(achatRole);
 						break;
-					case "admin":
+					case "commercial":
 						Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
 								.orElseThrow(() -> new RuntimeException("Fail! -> User Role n'existe pas."));
 						roles.add(adminRole);
