@@ -74,8 +74,8 @@ public class ControleTechController {
 
 
     @GetMapping("/ctrl/{id}")
-    public ResponseEntity<ControleTech> getCtrl(@PathVariable Long id) {
-        return cs.getControletechById(id);
+    public ResponseEntity<ControleTech> getCtrl(@PathVariable String id) {
+        return cs.getControletechById(Long.parseLong(id));
     }
 
     @PostMapping("/newsCtrl")
