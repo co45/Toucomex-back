@@ -57,29 +57,25 @@ public class SuiviController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<SuiviImp> createSuivi(@RequestBody SuiviModel suivi) {
-
-        Reception rec = new Reception();
-        rec.setDate_rcp(suivi.getDatereception());
-        rec.setNum_rcp(suivi.getReception());
-        rr.save(rec);
-        SuiviImp s = new SuiviImp();
-        s.setDate_arrive_stock(suivi.getDatearrivestock());
-        s.setFac(fr.getByfnum(suivi.getFacture()));
-        s.setDate_declaration(suivi.getDatedeclaration());
-        s.setNum_declaration(suivi.getNumdeclaration());
-        s.setObservation(suivi.getObservation());
-        s.setDate_arrive_f_p(suivi.getDatearrivefp());
-        s.setShipment(suivi.getShipment());
-        s.setReceptionS(rec);
-        Titre b = new Titre();
-        b=tr.getBytitrenum(suivi.getTitre());
-        if(b!= null){
-            tr.save(b);
-
-        }
+    public ResponseEntity<SuiviImp> createSuivi(@Valid @RequestBody SuiviModel suivi) {
 
 
+
+            SuiviImp s = new SuiviImp();
+            s.setDate_arrive_stock(suivi.getDatearrivestock());
+            System.out.println("========= DATE ARRIVE STOCK : "+ suivi.getDatearrivestock());
+
+            s.setFac(fr.getByfnum(suivi.getFacture()));
+            s.setDate_declaration(suivi.getDatedeclaration());
+            s.setNum_declaration(suivi.getNumdeclaration());
+            s.setObservation(suivi.getObservation());
+            s.setDate_arrive_f_p(suivi.getDatearrivefp());
+            s.setShipment(suivi.getShipment());
+            Reception rec = new Reception();
+            rec.setDate_rcp(suivi.getDatereception());
+            rec.setNum_rcp(suivi.getReception());
+            rr.save(rec);
+            s.setReceptionS(rec);
         try {
             System.out.println("************************** SUCCESS NEW SUIVI **************************");
             sr.save(s);

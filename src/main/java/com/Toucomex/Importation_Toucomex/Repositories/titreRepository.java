@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface titreRepository extends JpaRepository<Titre,Long> {
 
-    @Query(value = "SELECT t FROM Titre t Where f.num_t= ?1")
-    Titre getBytitrenum (String num);
+    @Query(value = "SELECT t FROM Titre t Where t.Num_t= ?1")
+    public Titre getBytitrenum (String num);
 }
