@@ -30,5 +30,6 @@ public class SuiviModel {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate datereception;
     private String montantfacture;
+    private String titre;
 
 }

@@ -2,10 +2,11 @@ package com.Toucomex.Importation_Toucomex.Controllers;
 
 import com.Toucomex.Importation_Toucomex.Auth.model.User;
 import com.Toucomex.Importation_Toucomex.Auth.repository.UserRepository;
-import com.Toucomex.Importation_Toucomex.Models.Fournisseur;
-import com.Toucomex.Importation_Toucomex.Models.SuiviImp;
+import com.Toucomex.Importation_Toucomex.Models.*;
+import com.Toucomex.Importation_Toucomex.Repositories.FactureRepository;
 import com.Toucomex.Importation_Toucomex.Repositories.ReceptionRepository;
 import com.Toucomex.Importation_Toucomex.Repositories.SuiviImpRepository;
+import com.Toucomex.Importation_Toucomex.Repositories.titreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,10 @@ public class SuiviController {
     private SuiviImpRepository sr;
     @Autowired
     private ReceptionRepository rr;
+    @Autowired
+    private FactureRepository fr;
+    @Autowired
+    private titreRepository tr;
 
     @GetMapping("/suivis")
     public List<SuiviImp> getAllSuivis() {
@@ -52,12 +57,35 @@ public class SuiviController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<SuiviImp> createSuivi(@RequestBody SuiviImp suivi) {
+    public ResponseEntity<SuiviImp> createSuivi(@RequestBody SuiviModel suivi) {
+
+        Reception rec = new Reception();
+        rec.setDate_rcp(suivi.getDatereception());
+        rec.setNum_rcp(suivi.getReception());
+        rr.save(rec);
+        SuiviImp s = new SuiviImp();
+        s.setDate_arrive_stock(suivi.getDatearrivestock());
+        s.setFac(fr.getByfnum(suivi.getFacture()));
+        s.setDate_declaration(suivi.getDatedeclaration());
+        s.setNum_declaration(suivi.getNumdeclaration());
+        s.setObservation(suivi.getObservation());
+        s.setDate_arrive_f_p(suivi.getDatearrivefp());
+        s.setShipment(suivi.getShipment());
+        s.setReceptionS(rec);
+        Titre b = new Titre();
+        b=tr.getBytitrenum(suivi.getTitre());
+        if(b!= null){
+            tr.save(b);
+
+        }
+
+
         try {
-            SuiviImp s = sr.save(suivi);
-            return new ResponseEntity<>(s, HttpStatus.CREATED);
+            System.out.println("************************** SUCCESS NEW SUIVI **************************");
+            sr.save(s);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
 }
