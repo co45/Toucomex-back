@@ -65,7 +65,6 @@ public class ExcelFileServices {
             Iterator<Row> rows = sheet.iterator();
 
             List<Commande> lstCmd = new ArrayList<Commande>();
-            List<ProduitCommande> lstpcmd = new ArrayList<ProduitCommande>();
 
 
             int x;
@@ -87,39 +86,23 @@ public class ExcelFileServices {
 
                 int cellIndex = 0;
 
-                Boolean bln=false;
-                String numcmd;
                 while (cellsInRow.hasNext()) {
                     Cell currentCell = cellsInRow.next();
-                    if(cellIndex==0 && cmdr.CommandeExists(currentCell.getStringCellValue())==0){
-                        bln=true;
-                    }
-                    if( cellIndex==0 && bln){
+
+                    if( cellIndex==0) {
                         cmd.setNumero(currentCell.getStringCellValue());
-
-
-                    }else if ( cellIndex == 1 && bln ) { // date
+                    }else if ( cellIndex == 1 ) { // date
                         LocalDate localDate = LocalDate.parse(currentCell.getStringCellValue(), formatter);
                         cmd.setDate_cmd(localDate);
                         cmdr.save(cmd);
                         pci.setCommandeId(cmd.getID_cmd());
-                    } else if ( cellIndex == 2 && bln )  { // fourniseur
+                    } else if ( cellIndex == 2)  { // fourniseur
                         cmd.setFsrc(fr.getFournisseurBynom(currentCell.getStringCellValue()));
-                    }else if ( cellIndex == 3 )  { // produit
-                        pcmd.setProduit(pr.findProduitsByReference(currentCell.getStringCellValue()));
-                        pci.setProduitId(pr.findProduitsByReference(currentCell.getStringCellValue()).getID_pdt());
-                    }else if ( cellIndex == 5 )  { // qté
-                        pcmd.setQuantite((int)currentCell.getNumericCellValue());
-                    }else if ( cellIndex == 6 )  { // prix
-                        pcmd.setPrix((float)currentCell.getNumericCellValue());
                     }
                     cellIndex++;
                 }
-                if(bln){
-                    pcmd.setId(pci);
+
                     lstCmd.add(cmd);
-                    lstpcmd.add(pcmd);
-                }
 
                 }
 
@@ -130,7 +113,7 @@ public class ExcelFileServices {
 
             //---------------------
             // Save cmd + pcmd  to DataBase
-            pdtcmdr.saveAll(lstpcmd);
+            cmdr.saveAll(lstCmd);
         } catch (IOException e) {
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());
         }

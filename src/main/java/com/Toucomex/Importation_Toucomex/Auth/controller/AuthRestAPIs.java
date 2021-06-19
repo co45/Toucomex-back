@@ -82,36 +82,34 @@ public class AuthRestAPIs  {
 
 		// Creating user's account
 		User user = new User(signUpRequest.getName(), signUpRequest.getPrenom(), signUpRequest.getUsername(), signUpRequest.getEmail(),
-				encoder.encode(signUpRequest.getPassword()), signUpRequest.getDateOfBirth(), signUpRequest.getPhone(), signUpRequest.getDepartement(),signUpRequest.getPhoto());
+				encoder.encode(signUpRequest.getPassword()), signUpRequest.getDateOfBirth(), signUpRequest.getPhone(), signUpRequest.getDepartement());
 
-//		Set<String> strRoles = signUpRequest.getRole();
-		String strRoles = signUpRequest.getRole();
-
+		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();
 
-		if (strRoles.isBlank()) {
+		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(RoleName.ROLE_COMMERCIAL)
-					.orElseThrow(() -> new RuntimeException("Error: Role n'existe pas."));
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 			roles.add(userRole);
 		} else {
-//			strRoles.forEach(role -> {
-				switch (/*role*/ strRoles) {
-					case "achat":
-						Role achatRole = roleRepository.findByName(RoleName.ROLE_ACHAT)
-								.orElseThrow(() -> new RuntimeException("Fail! -> User Role n'existe pas."));
-						roles.add(achatRole);
-						break;
-					case "commercial":
+			strRoles.forEach(role -> {
+				switch (role) {
+					case "admin":
 						Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-								.orElseThrow(() -> new RuntimeException("Fail! -> User Role n'existe pas."));
+								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
 						roles.add(adminRole);
+						break;
+					case "achat":
+						Role achat = roleRepository.findByName(RoleName.ROLE_ACHAT)
+								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+						roles.add(achat);
 						break;
 					default:
 						Role userRole = roleRepository.findByName(RoleName.ROLE_COMMERCIAL)
-								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role n'existe pas."));
+								.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
 						roles.add(userRole);
 				}
-//			});
+			});
 		}
 		user.setRoles(roles);
 		userRepository.save(user);
